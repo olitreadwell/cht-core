@@ -210,18 +210,23 @@ describe('Authorization middleware', () => {
       testReq.userCtx = { name: 'user' };
       auth.getUserCtx.resolves({ name: 'user' });
       auth.isOnlineOnly.withArgs({ name: 'user' }).returns(false);
-      auth.getUserSettings.withArgs({ name: 'user' }).rejects({ some: 'error' });
+      const getUserSettingsError = { some: 'error' };
+      auth.getUserSettings.withArgs({ name: 'user' }).rejects(getUserSettingsError);
+      sinon.stub(logger, 'error');
 
       return middleware
         .onlineUserProxy(proxy, testReq, testRes, next)
         .then(() => {
           serverUtils.error.callCount.should.equal(0);
           next.callCount.should.equal(1);
-          next.args[0].should.deep.equal([{ some: 'error' }]);
+          next.args[0].should.deep.equal([undefined]);
           proxy.web.callCount.should.equal(0);
           testReq.userCtx.should.deep.equal({ name: 'user' });
           auth.isOnlineOnly.args[0][0].should.deep.equal({ name: 'user'});
           auth.getUserSettings.args[0][0].should.deep.equal({ name: 'user'});
+          logger.error.callCount.should.equal(1);
+          logger.error.args[0][1].should.equal('user');
+          logger.error.args[0][2].should.deep.equal(getUserSettingsError);
         });
     });
   });
@@ -261,17 +266,21 @@ describe('Authorization middleware', () => {
     it('catches user_settings errors', () => {
       testReq.userCtx = { name: 'user' };
       auth.isOnlineOnly.withArgs({ name: 'user' }).returns(false);
-      auth.getUserSettings.withArgs({ name: 'user' }).rejects({ some: 'error' });
+      const getUserSettingsError = { some: 'error' };
+      auth.getUserSettings.withArgs({ name: 'user' }).rejects(getUserSettingsError);
+      sinon.stub(logger, 'error');
 
       return middleware
         .onlineUserPassThrough(testReq, testRes, next)
         .then(() => {
           serverUtils.error.callCount.should.equal(0);
           next.callCount.should.equal(1);
-          next.args[0].should.deep.equal([{ some: 'error' }]);
+          next.args[0].should.deep.equal([undefined]);
           testReq.userCtx.should.deep.equal({ name: 'user' });
           auth.isOnlineOnly.args[0][0].should.deep.equal({ name: 'user'});
           auth.getUserSettings.args[0][0].should.deep.equal({ name: 'user'});
+          logger.error.callCount.should.equal(1);
+          logger.error.args[0][2].should.deep.equal(getUserSettingsError);
         });
     });
   });
@@ -446,6 +455,24 @@ describe('Authorization middleware', () => {
           testReq.userCtx.should.deep.equal({ name: 'user', contact_id: 'a' });
           auth.isOnlineOnly.args[0][0].should.deep.equal({ name: 'user'});
           auth.getUserSettings.args[0][0].should.deep.equal({ name: 'user'});
+        });
+    });
+
+    it('logs and continues when loading user settings fails', () => {
+      testReq.userCtx = { name: 'user' };
+      auth.isOnlineOnly.withArgs({ name: 'user' }).returns(false);
+      const getUserSettingsError = new Error('settings lookup failed');
+      auth.getUserSettings.withArgs({ name: 'user' }).rejects(getUserSettingsError);
+      sinon.stub(logger, 'error');
+
+      return middleware
+        .getUserSettings(testReq, testRes, next)
+        .then(() => {
+          next.callCount.should.equal(1);
+          logger.error.callCount.should.equal(1);
+          logger.error.args[0][0].should.equal('Failed to load user settings for %s: %o');
+          logger.error.args[0][1].should.equal('user');
+          logger.error.args[0][2].should.deep.equal(getUserSettingsError);
         });
     });
   });

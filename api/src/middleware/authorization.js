@@ -16,7 +16,9 @@ const getUserSettings = (req) => {
     .then(userCtx => {
       req.userCtx = userCtx;
     })
-    .catch(err => err);
+    .catch(err => {
+      logger.error('Failed to load user settings for %s: %o', req.userCtx?.name, err);
+    });
 };
 
 module.exports = {
