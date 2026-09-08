@@ -25,6 +25,7 @@
 - 2026-08-24 dropped — no small verifiable pick (GFIs assigned/in-flight).
 - 2026-08-25 issue #11051 — pr-opened (fork PR #1, authorization.js getUserSettings error swallow).
 - 2026-08-25 issue #6495 — pr-opened (fork PR #2, sentinel TZ-independent tests).
+- 2026-09-09 trivial-fix pass — pr-opened (fork PR #18, bundled 8 meaning-preserving typo fixes across 6 files docs) — lesson: bundled docs-typo PRs work well here.
 
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
