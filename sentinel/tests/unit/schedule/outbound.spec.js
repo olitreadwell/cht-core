@@ -1,4 +1,5 @@
 const assert = require('chai').assert;
+const moment = require('moment');
 const sinon = require('sinon');
 const rewire = require('rewire');
 
@@ -773,7 +774,9 @@ describe('outbound schedule', () => {
       configGet.returns(configs);
       batch.resolvesArg(0);
 
-      clock = sinon.useFakeTimers({now: new Date('2023-07-11T03:05:00+0000').getTime()});
+      // Anchor the fake clock to five minutes past the start of the local hour so the test
+      // passes regardless of the runner's timezone offset (e.g. half-hour timezones).
+      clock = sinon.useFakeTimers({now: moment().startOf('hour').add(5, 'minutes').valueOf()});
 
       return outbound.execute().then((dueConfigs) => {
         assert.equal(configGet.callCount, 1);
