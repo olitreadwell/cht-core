@@ -1,5 +1,5 @@
 # medic/cht-core context
-> refreshed 2026-09-08 | upstream default: master @ 372677567640d1d3e77e6e46f168fe69a8a9e218
+> refreshed 2026-09-24 | upstream default: master @ 8eb5bb3c98e84db38f552adaef18e5ad579f620d
 
 ## Identity & policies
 - upstream: medic/cht-core, default branch master, primary language JavaScript/TypeScript, English-first (yes — all docs/UI English).
