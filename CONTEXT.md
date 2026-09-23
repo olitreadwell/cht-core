@@ -27,5 +27,6 @@
 - 2026-08-25 issue #6495 — pr-opened (fork PR #2, sentinel TZ-independent tests).
 - 2026-09-09 trivial-fix pass — pr-opened (fork PR #17, bundled 10 meaning-preserving typo fixes across 10 files docs/comments/test-desc). Parallel worker opened PR #18 (8 fixes/6 files) with 6-file overlap; consolidated: added PR #18 unique README fix to PR #17, closed PR #18. Lesson: bundled docs-typo PRs work well here; dedupe overlapping parallel trivial-fix PRs into one.
 
+- 2026-09-24 trivial-fix pass — pr-opened (fork PR #29, bundled 18 typos across 10 files: comments, jsdoc, error strings, test descriptions). No overlap with PR #17/#18 files.
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
