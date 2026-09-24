@@ -435,7 +435,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 
     <!-- If this is a bind element that also has an input, do nothing as it will be dealt with by the corresponding xf:input -->
     <!-- Note that this test is not fully spec-compliant. It will work with XLS-form produced forms that have no relative nodes
-         and use the ref atribute only -->
+         and use the ref attribute only -->
     <xsl:if test="not( local-name() = 'bind' and (
             /h:html/h:body//xf:input[@ref=$nodeset] or
             /h:html/h:body//xf:upload[@ref=$nodeset] or
