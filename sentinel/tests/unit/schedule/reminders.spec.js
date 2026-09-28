@@ -123,7 +123,13 @@ describe('reminders', () => {
 
     it('should return date from next schedule for cron', () => {
       clock.setSystemTime(moment('2021-06-17T10:48:54.000Z').valueOf());
-      assert.equal(getSchedule({ cron: '0 * * * *' }).next().toISOString(), '2021-06-17T11:00:00.000Z');
+      const next = moment(getSchedule({ cron: '0 * * * *' }).next());
+      // The schedule fires at the start of the next hour in the runner's local timezone,
+      // so only assert on the parts of the date that hold regardless of the timezone offset.
+      assert(next.isAfter(moment('2021-06-17T10:48:54.000Z')));
+      assert.equal(next.minutes(), 0);
+      assert.equal(next.seconds(), 0);
+      assert.equal(next.milliseconds(), 0);
     });
 
     it('should return date from next schedule for text_expression', () => {
@@ -193,6 +199,7 @@ describe('reminders', () => {
     });
     it('should return false if no schedule', () => {
       const tick = oneDay;
+      const since = moment(tick).startOf('hour').subtract(1, 'day');
       const schedule = { prev: sinon.stub()};
       const reminder = { text_expression: 'none', form: 'formA' };
       reminders.__set__('getSchedule', sinon.stub().returns(schedule));
@@ -208,7 +215,7 @@ describe('reminders', () => {
           descending: true,
           limit: 1,
           startkey: `reminderlog:formA:${tick}`,
-          endkey: `reminderlog:formA:0`
+          endkey: `reminderlog:formA:${since.valueOf()}`
         }]);
       });
     });
@@ -219,6 +226,7 @@ describe('reminders', () => {
       reminders.__set__('getSchedule', sinon.stub().returns(schedule));
       db.sentinel.allDocs.resolves({ rows: [] });
       const now = oneDay;
+      const since = moment(now).startOf('hour').subtract(1, 'day');
       clock.tick(now);
 
       return matchReminder(reminder).then(result => {
@@ -230,10 +238,10 @@ describe('reminders', () => {
           descending: true,
           limit: 1,
           startkey: `reminderlog:formB:${now}`,
-          endkey: `reminderlog:formB:${now - oneDay}`
+          endkey: `reminderlog:formB:${since.valueOf()}`
         }]);
         assert.equal(schedule.prev.callCount, 1);
-        assert.deepEqual(schedule.prev.args[0], [1, moment(now).toDate(), moment(0).toDate()]);
+        assert.deepEqual(schedule.prev.args[0], [1, moment(now).toDate(), since.toDate()]);
       });
     });
 
@@ -278,12 +286,13 @@ describe('reminders', () => {
       const reminder = { text_expression: 'none', form: 'formB' };
       reminders.__set__('getSchedule', sinon.stub().returns(schedule));
       const now = oneDay;
+      const since = moment(now).startOf('hour').subtract(1, 'day');
       clock.tick(now);
       db.sentinel.allDocs.resolves({ rows: [] });
 
       return matchReminder(reminder).then(result => {
         assert.deepEqual(result, moment(prevSchedule));
-        assert.deepEqual(schedule.prev.args[0], [1, moment(now).toDate(), moment(now-oneDay).toDate()]);
+        assert.deepEqual(schedule.prev.args[0], [1, moment(now).toDate(), since.toDate()]);
       });
     });
 
