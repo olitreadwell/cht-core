@@ -1,5 +1,5 @@
 # medic/cht-core context
-> refreshed 2026-09-24 | upstream default: master @ 8eb5bb3c98e84db38f552adaef18e5ad579f620d
+> refreshed 2026-10-01 | upstream default: master @ 3572c9bb404ba490a7133630d4819190a298442a
 
 ## Identity & policies
 - upstream: medic/cht-core, default branch master, primary language JavaScript/TypeScript, English-first (yes — all docs/UI English).
@@ -28,5 +28,6 @@
 - 2026-09-09 trivial-fix pass — pr-opened (fork PR #17, bundled 10 meaning-preserving typo fixes across 10 files docs/comments/test-desc). Parallel worker opened PR #18 (8 fixes/6 files) with 6-file overlap; consolidated: added PR #18 unique README fix to PR #17, closed PR #18. Lesson: bundled docs-typo PRs work well here; dedupe overlapping parallel trivial-fix PRs into one.
 
 - 2026-09-24 trivial-fix pass — pr-opened (fork PR #29, bundled 18 typos across 10 files: comments, jsdoc, error strings, test descriptions). No overlap with PR #17/#18 files.
+- 2026-10-01 trivial-fix pass — pr-opened (fork PR #32, bundled 11 typos across 10 files: comments, jsdoc, package.json description, docs, test descriptions). No overlap with PR #17/#18/#29 files. Upstream master advanced 8eb5bb3c -> 3572c9bb since the 2026-09-24 refresh; header re-verified live at 3572c9bb.
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
