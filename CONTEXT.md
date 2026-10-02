@@ -1,5 +1,5 @@
 # medic/cht-core context
-> refreshed 2026-10-01 | upstream default: master @ 3572c9bb404ba490a7133630d4819190a298442a
+> refreshed 2026-10-02 | upstream default: master @ 3572c9bb404ba490a7133630d4819190a298442a (unchanged since 2026-10-01)
 
 ## Identity & policies
 - upstream: medic/cht-core, default branch master, primary language JavaScript/TypeScript, English-first (yes — all docs/UI English).
@@ -29,5 +29,6 @@
 
 - 2026-09-24 trivial-fix pass — pr-opened (fork PR #29, bundled 18 typos across 10 files: comments, jsdoc, error strings, test descriptions). No overlap with PR #17/#18 files.
 - 2026-10-01 trivial-fix pass — pr-opened (fork PR #32, bundled 11 typos across 10 files: comments, jsdoc, package.json description, docs, test descriptions). No overlap with PR #17/#18/#29 files. Upstream master advanced 8eb5bb3c -> 3572c9bb since the 2026-09-24 refresh; header re-verified live at 3572c9bb.
+- 2026-10-02 issue #11449 — pr-opened (fork PR #33, `shared-libs/cht-datasource` `fetchAndFilter` set the page cursor with a document count while `skip` counts rows, so accepted docs were dropped and `cursor: null` was returned early; now consumes only the rows needed to fill the page and derives the cursor from rows consumed, with a unit regression test). Self-found/maintainer-filed bug, unassigned, no in-flight PR. Lesson: the datasource paging cursor is a tested invariant; keep row-vs-doc accounting explicit.
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
