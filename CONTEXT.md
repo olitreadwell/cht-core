@@ -1,10 +1,10 @@
 # medic/cht-core context
-> refreshed 2026-10-02 | upstream default: master @ 3572c9bb404ba490a7133630d4819190a298442a (unchanged since 2026-10-01)
+> refreshed 2026-10-03 | upstream default: master @ f71f188e3e5c21b5f0996b346c9a18158009ae62
 
 ## Identity & policies
 - upstream: medic/cht-core, default branch master, primary language JavaScript/TypeScript, English-first (yes — all docs/UI English).
 - CLA/DCO: none (no CLA bot, no DCO in CONTRIBUTING).
-- AI-assisted PR policy: unstated at repo level; PR template has an "AI disclosure" checkbox (docs.communityhealthtoolkit.org/community/contributing/ai-guidelines/). Policy passport: ai_disclosure_required=false. Fork PRs carry no AI mention.
+- AI-assisted PR policy: no repo-level CONTRIBUTING AI text, but `.github/PULL_REQUEST_TEMPLATE.md` (live master) carries an "AI disclosure" checklist item ("Please disclose use of AI" -> docs.communityhealthtoolkit.org/community/contributing/ai-guidelines/). Per config `ai_policy_check.rules.ai_disclosure_required` + `preflight_scan.critical_filters_hard_skip`, a PR-template checkbox means `ai_disclosure_required=true` -> HARD SKIP (outcome `skip-requires-ai-disclosure`). Stored passport still says false: engine/policy-worker.sh only greps CONTRIBUTING.md, so it misses the PR template (detector gap flagged 2026-09-24). Passport needs correcting to `pr_template_present=true, ai_disclosure_required=true`.
 - signed commits required: no (policy passport signed_commits_required=false).
 - PR template: .github/PULL_REQUEST_TEMPLATE.md (semantic title `<type>(#issue): subject`; fill verbatim).
 - external tracker: github.
@@ -30,5 +30,6 @@
 - 2026-09-24 trivial-fix pass — pr-opened (fork PR #29, bundled 18 typos across 10 files: comments, jsdoc, error strings, test descriptions). No overlap with PR #17/#18 files.
 - 2026-10-01 trivial-fix pass — pr-opened (fork PR #32, bundled 11 typos across 10 files: comments, jsdoc, package.json description, docs, test descriptions). No overlap with PR #17/#18/#29 files. Upstream master advanced 8eb5bb3c -> 3572c9bb since the 2026-09-24 refresh; header re-verified live at 3572c9bb.
 - 2026-10-02 issue #11449 — pr-opened (fork PR #33, `shared-libs/cht-datasource` `fetchAndFilter` set the page cursor with a document count while `skip` counts rows, so accepted docs were dropped and `cursor: null` was returned early; now consumes only the rows needed to fill the page and derives the cursor from rows consumed, with a unit regression test). Self-found/maintainer-filed bug, unassigned, no in-flight PR. Lesson: the datasource paging cursor is a tested invariant; keep row-vs-doc accounting explicit.
+- 2026-10-03 trivial-fix pass — SKIPPED, no PR (`skip-requires-ai-disclosure`): verified live on master that `.github/PULL_REQUEST_TEMPLATE.md` has an "AI disclosure" checklist item; config treats a PR-template checkbox as `ai_disclosure_required` -> hard skip before any coding. No typo hunt run. Lesson: loop-trivial re-picks this repo on the stale passport (`ai_disclosure_required=false`); correct the passport (or fix policy-worker.sh to scan the PR template) so it stops re-picking.
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
