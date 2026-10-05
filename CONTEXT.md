@@ -1,5 +1,5 @@
 # medic/cht-core context
-> refreshed 2026-10-04 | upstream default: master @ f71f188e3e5c21b5f0996b346c9a18158009ae62
+> refreshed 2026-10-05 | upstream default: master @ f71f188e3e5c21b5f0996b346c9a18158009ae62
 
 ## Identity & policies
 - upstream: medic/cht-core, default branch master, primary language JavaScript/TypeScript, English-first (yes — all docs/UI English).
@@ -32,5 +32,7 @@
 - 2026-10-02 issue #11449 — pr-opened (fork PR #33, `shared-libs/cht-datasource` `fetchAndFilter` set the page cursor with a document count while `skip` counts rows, so accepted docs were dropped and `cursor: null` was returned early; now consumes only the rows needed to fill the page and derives the cursor from rows consumed, with a unit regression test). Self-found/maintainer-filed bug, unassigned, no in-flight PR. Lesson: the datasource paging cursor is a tested invariant; keep row-vs-doc accounting explicit.
 - 2026-10-03 trivial-fix pass — SKIPPED, no PR (`skip-requires-ai-disclosure`): verified live on master that `.github/PULL_REQUEST_TEMPLATE.md` has an "AI disclosure" checklist item; config treats a PR-template checkbox as `ai_disclosure_required` -> hard skip before any coding. No typo hunt run. Lesson: loop-trivial re-picks this repo on the stale passport (`ai_disclosure_required=false`); correct the passport (or fix policy-worker.sh to scan the PR template) so it stops re-picking.
 - 2026-10-04 trivial-fix pass — SKIPPED, no PR (`skip-requires-ai-disclosure`): upstream master unchanged at f71f188e; the PR-template AI-disclosure gate still applies (re-verified live). Root cause of the recurring re-pick fixed in the pipeline repo: passport corrected + engine/policy-worker.sh now scans `.github/PULL_REQUEST_TEMPLATE.md` for AI disclosure. Loop should no longer pick this repo for trivial PRs (substantive non-AI-disclosable work is also barred by the same gate until Oli reconciles the policy).
+- 2026-10-05 trivial-fix pass — SKIPPED, no PR (`skip-requires-ai-disclosure`): upstream master unchanged at f71f188e; the PR-template AI-disclosure gate was re-verified LIVE (`.github/PULL_REQUEST_TEMPLATE.md` still carries the "AI disclosure: Please disclose use of AI" checklist item) -> `ai_disclosure_required=true` -> HARD SKIP before any coding. Passport already corrected 2026-10-04 and engine/loop-trivial.sh `hard_blocked()` skips this repo, so no typo/link/stale-command hunt was run. Lesson: the trivial loop must not re-pick this repo; if it appears again the pick was forced rather than queue-selected.
+
 ## Mined gaps (discovered, not yet attempted)
 - 2026-09-08 trivial-fix pass: hunt typos/dead links/stale commands across whole repo; bundle >=3 genuine fixes into <=10 files.
