@@ -176,26 +176,30 @@ export const fetchAndFilter = <T>(
     currentDocs: T[] = [],
   ): Promise<Page<T>> => {
     const docs = await getFunction(currentLimit, currentSkip);
-    const noMoreResults = docs.length < currentLimit;
-    const newDocs = docs.filter((doc): doc is T => filterFunction(doc));
-    const overFetchCount = currentDocs.length + newDocs.length - limit || 0;
-    const totalDocs = [ ...currentDocs, ...newDocs ].slice(0, limit);
 
-    if (noMoreResults) {
-      return { data: totalDocs, cursor: null };
+    // Only consume the rows needed to fill the page, so the cursor can point at the first unused row.
+    const newDocs: T[] = [];
+    let consumed = 0;
+    while (consumed < docs.length && currentDocs.length + newDocs.length < limit) {
+      const doc = docs[consumed];
+      consumed++;
+      if (filterFunction(doc)) {
+        newDocs.push(doc as T);
+      }
     }
 
-    if (totalDocs.length === limit) {
-      const nextSkip = currentSkip + currentLimit - overFetchCount;
+    const totalDocs = [ ...currentDocs, ...newDocs ];
+    const noMoreResults = consumed === docs.length && docs.length < currentLimit;
 
-      return { data: totalDocs, cursor: nextSkip.toString() };
+    if (totalDocs.length === limit || noMoreResults) {
+      return { data: totalDocs, cursor: noMoreResults ? null : (currentSkip + consumed).toString() };
     }
 
     // Re-fetch twice as many docs as we need to limit number of recursions
-    const missingCount = currentLimit - newDocs.length;
+    const missingCount = limit - totalDocs.length;
     logger.debug(`Found [${missingCount.toString()}] invalid docs. Re-fetching additional records.`);
     const nextLimit = missingCount * 2;
-    const nextSkip = currentSkip + currentLimit;
+    const nextSkip = currentSkip + consumed;
 
     return recursionInner(
       nextLimit,
