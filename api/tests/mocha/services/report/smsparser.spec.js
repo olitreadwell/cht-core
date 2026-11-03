@@ -133,7 +133,7 @@ describe('sms parser', () => {
     chai.expect(data.phone_number).to.equal('+9779841232323');
   });
 
-  it('accepts valid phone number with extension in Nepali language', () => {
+  it('accepts valid phone number with extension in Nepali langauge', () => {
     const doc = { message: 'NP 20 +९७७९८४१२३२३२३' };
     const def = definitions.forms.NP;
     sinon.stub(config, 'getAll').returns({

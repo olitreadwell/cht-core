@@ -608,7 +608,8 @@ describe('local doc lib', () => {
       expect(result.cursor).to.equal('4');
       expect(getFunction.firstCall.calledWith(3, 0)).to.be.true;
       expect(getFunction.secondCall.calledWith(2, 3)).to.be.true;
-      expect(filterFunction.callCount).to.equal(5);
+      // the scan stops as soon as the page is full, so doc 5 is never filtered
+      expect(filterFunction.callCount).to.equal(4);
     });
 
     it('should return null cursor when no more results', async () => {
@@ -653,6 +654,31 @@ describe('local doc lib', () => {
       expect(getFunction.firstCall.calledWith(3, 0)).to.be.true;
       expect(getFunction.secondCall.calledWith(6, 3)).to.be.true;
       expect(filterFunction.callCount).to.equal(6);
+    });
+
+    it('keeps the cursor aligned with the rows it consumed so a page never drops an accepted doc', async () => {
+      // Six rows at a page size of two. Rows 1, 2 and 6 are rejected, so rows 3, 4 and 5 are accepted.
+      const rows = [
+        { _id: 'row-1' },
+        { _id: 'row-2' },
+        { _id: 'row-3' },
+        { _id: 'row-4' },
+        { _id: 'row-5' },
+        { _id: 'row-6' },
+      ];
+      const rejected = ['row-1', 'row-2', 'row-6'];
+      getFunction.callsFake((limit: number, skip: number) => Promise.resolve(rows.slice(skip, skip + limit)));
+      filterFunction.callsFake((doc: Doc.Doc) => !rejected.includes(doc._id));
+
+      const fetchAndFilterFunc = fetchAndFilter(getFunction, filterFunction, 2);
+
+      const firstPage = await fetchAndFilterFunc(2, 0);
+      expect(firstPage.data).to.deep.equal([{ _id: 'row-3' }, { _id: 'row-4' }]);
+      expect(firstPage.cursor).to.equal('4');
+
+      const secondPage = await fetchAndFilterFunc(2, Number(firstPage.cursor));
+      expect(secondPage.data).to.deep.equal([{ _id: 'row-5' }]);
+      expect(secondPage.cursor).to.be.null;
     });
   });
 
