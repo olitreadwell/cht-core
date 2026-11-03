@@ -40,9 +40,9 @@ The Core Framework of the [Community Health Toolkit](https://communityhealthtool
 
 To setup a development environment to contribute to the Core Framework follow the [development instructions](https://docs.communityhealthtoolkit.org/community/contributing/code/core/dev-environment/).
 
-First time contributor? Issues labeled [Good First Issue](https://github.com/medic/cht-core/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Good%20first%20issue%22) are a great place to start. Have a look at the [First Time Contributors Guide](https://docs.communityhealthtoolkit.org/community/contributing/first-time-contributors/) to get your started! 
+First time contributor? Issues labeled [Good First Issue](https://github.com/medic/cht-core/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Good%20first%20issue%22) are a great place to start. Have a look at the [First Time Contributors Guide](https://docs.communityhealthtoolkit.org/community/contributing/first-time-contributors/) to get you started!
 
-Looking for other ways to help? Have a lok at the [starting guides for contributors](https://docs.communityhealthtoolkit.org/community/contributing/)!
+Looking for other ways to help? Have a look at the [starting guides for contributors](https://docs.communityhealthtoolkit.org/community/contributing/)!
 
 The easiest ways to get in touch are by raising issues in the [GitHub repo](https://github.com/medic/cht-core/issues) or [joining the CHT Community Forum](https://forum.communityhealthtoolkit.org).
 

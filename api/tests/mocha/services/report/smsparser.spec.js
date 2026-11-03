@@ -144,7 +144,7 @@ describe('sms parser', () => {
     chai.expect(data.phone_number).to.equal('+9779841232323');
   });
 
-  it('returns provided Nepali number converted ot english if number is invalid', () => {
+  it('returns provided Nepali number converted to english if number is invalid', () => {
     // Looks counter intuitive but validation needs to be done again in transition so it can
     // act against the valid or invalid result. Warning is logged just in case.
     const doc = { message: 'NP 20 ९८४१२३' };

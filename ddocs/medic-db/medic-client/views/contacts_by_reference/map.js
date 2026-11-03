@@ -18,7 +18,7 @@ function(doc) {
     }
     if (doc.rc_code) {
       // need String because rewriter wraps everything in quotes
-      // keep refid case-insenstive since data is usually coming from SMS
+      // keep refid case-insensitive since data is usually coming from SMS
       emitReference('external', String(doc.rc_code).toUpperCase());
     }
   }

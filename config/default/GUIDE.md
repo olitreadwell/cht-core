@@ -48,7 +48,7 @@ You can remove a question by removing the row specific to that question in XLS f
 
 For example, before removing a question that asks for the date of birth (DOB) for a user, you need to make sure that DOB is not used anywhere else (to calculate the age of the user, etc). Without the original row, all rows depending on it will fail.
 
-The question being removed may also be used outsie of forms in the configuration, such as in Tasks, Targets or Contact-summary. One easy way to find the usage of the question is by searching the configuration for its name.
+The question being removed may also be used outside of forms in the configuration, such as in Tasks, Targets or Contact-summary. One easy way to find the usage of the question is by searching the configuration for its name.
 
 ### Adding choice questions
 

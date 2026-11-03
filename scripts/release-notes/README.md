@@ -21,7 +21,7 @@ When you have a finalized output of the `release-notes`, you can create a new do
 
 ### Fixing commits
 
-Very likely the CI will failed with an error in the the "Install Deps & Run Node Script" section and no artifact will be saved. The error will start with `---ERROR--- Some commits included...` as shown below. For each of the commits, follow the steps listed to correctly associate the commit with the milestone.
+Very likely the CI will fail with an error in the "Install Deps & Run Node Script" section and no artifact will be saved. The error will start with `---ERROR--- Some commits included...` as shown below. For each of the commits, follow the steps listed to correctly associate the commit with the milestone.
 
 If all commits have been fixed, run the above `gh` command locally to re-run the action run on GitHub. Check the output of the CI, repeating the fix and re-run cycle as needed.
 
